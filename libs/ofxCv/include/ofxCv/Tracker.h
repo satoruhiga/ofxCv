@@ -307,6 +307,7 @@ namespace ofxCv {
 	protected:
 		bool dead;
 		unsigned int label;
+		unsigned int lastSeen;
 	public:
 		Follower()
 		:dead(false)
@@ -323,6 +324,15 @@ namespace ofxCv {
 		}
 		unsigned int getLabel() const {
 			return label;
+		}
+		void setLastSeen(unsigned int lastSeen) {
+			this->lastSeen = lastSeen;
+		}
+		unsigned int getLastSeen() const {
+			return lastSeen;
+		}
+		bool isTracked() const {
+			return lastSeen == 0;
 		}
 		bool getDead() const {
 			return dead;
@@ -347,6 +357,9 @@ namespace ofxCv {
 				if(!Tracker<T>::existsCurrent(curLabel)) {
 					curFollower.kill();
 				} else {
+					TrackedObject<T> *tracked = Tracker<T>::currentLabelMap[curLabel];
+					curFollower.setLastSeen(tracked->getLastSeen());
+
 					curFollower.update(Tracker<T>::getCurrent(curLabel));
 				}
 			}
@@ -365,6 +378,7 @@ namespace ofxCv {
 					labels.erase(labels.begin() + i);
 				}
 			}
+			return labels;
 		}
 		vector<F>& getFollowers() {
 			return followers;
