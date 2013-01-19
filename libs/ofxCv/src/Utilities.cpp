@@ -23,6 +23,11 @@ namespace ofxCv {
 		return Point3f(vec.x, vec.y, vec.z);
 	}
 	
+	Mat toCv(ofMatrix4x4 &mat)
+	{
+		return Mat(4, 4, CV_32F, mat.getPtr());
+	}
+	
 	cv::Rect toCv(ofRectangle rect) {
 		return cv::Rect(rect.x, rect.y, rect.width, rect.height);
 	}
@@ -61,6 +66,11 @@ namespace ofxCv {
 	
 	ofVec3f toOf(Point3f point) {
 		return ofVec3f(point.x, point.y, point.z);
+	}
+	
+	ofMatrix4x4 toOf(Mat &mat)
+	{
+		return ofMatrix4x4((float*)mat.ptr());
 	}
 	
 	ofRectangle toOf(cv::Rect rect) {
